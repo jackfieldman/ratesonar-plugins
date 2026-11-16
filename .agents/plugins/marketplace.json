@@ -1,0 +1,15 @@
+{
+  "name": "ratesonar-plugins",
+  "owner": {
+    "name": "RateSonar",
+    "url": "https://ratesonar.com"
+  },
+  "description": "RateSonar for coding agents: dated Australian bank and lender rates over MCP.",
+  "plugins": [
+    {
+      "name": "ratesonar",
+      "source": "./plugins/ratesonar",
+      "description": "Dated record of the rates Australian banks and lenders advertise. Read-only MCP tools plus a skill that reports each rate with its date."
+    }
+  ]
+}

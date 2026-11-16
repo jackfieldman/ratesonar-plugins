@@ -1,0 +1,48 @@
+{
+  "name": "ratesonar",
+  "version": "1.0.0",
+  "description": "Dated record of the rates Australian banks and lenders advertise. Read-only MCP tools plus a skill that reports each rate with its date.",
+  "author": {
+    "name": "RateSonar",
+    "url": "https://ratesonar.com"
+  },
+  "homepage": "https://ratesonar.com/agents/",
+  "keywords": [
+    "australia",
+    "interest-rates",
+    "home-loans",
+    "term-deposits",
+    "savings",
+    "banks",
+    "MCP"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "RateSonar",
+    "shortDescription": "Australian bank rates, dated",
+    "longDescription": "RateSonar keeps a daily record of the interest rates that Australian banks and lenders advertise. Each rate carries the date RateSonar recorded it. The record starts on 12 June 2026.\n\nUse RateSonar to:\n- Compare current advertised rates across lenders for home loans, savings accounts, term deposits, credit cards, personal loans, car loans and business loans. Filter home loans by owner-occupied or investment, principal-and-interest or interest-only, and variable or fixed. Filter term deposits by term.\n- See one product's advertised rate on each recorded day since 12 June 2026, and when it changed.\n- Read one product's full published detail: rate tiers, bonus conditions, fees, eligibility and constraints, as the lender published them on a given date.\n- List recent rate changes: rises, cuts, new products and withdrawn products, with the size of each move in basis points.\n- Read standard series, such as the variable home loan rate minus the RBA cash rate, for each lender and as a market median.\n- Place one bank's deposit and loan prices against comparable peers, its own history and the RBA cash rate, with an evidence-checked reading of that position.\n- Read dated RBA market curves: bond yields and the RBA's fitted zero, forward and discount curves.\n\nHow the data works:\n- Most rates come from the product reference data that Australian lenders publish under the Consumer Data Right (CDR). RateSonar also records the RBA cash rate and some lender web pages.\n- RateSonar answers from its own stored record. It does not send your question to a lender.\n- A day with no record is marked \"carried-forward\". Spreads and medians are marked \"derived\". Neither is shown as a new observation.\n- RateSonar has no record before 12 June 2026.\n\nLimits:\n- RateSonar reports advertised rates. It gives no personal financial advice, does not say which product suits a person, takes no applications and moves no money.\n- It covers Australian lenders only. A lender that does not publish CDR product data can be missing.\n- Without an API key, series requests return the last 31 days.\n\nWho it is for: people who compare Australian bank products, mortgage brokers, analysts, journalists and researchers who need a dated record of advertised rates.\n\nNo sign-in is needed to start. Every tool only reads data.",
+    "developerName": "RateSonar",
+    "category": "Finance",
+    "capabilities": [
+      "Compare current rates",
+      "Rate history by date",
+      "Product tiers and fees",
+      "Recent rate changes",
+      "Rate series and spreads",
+      "Bank position against peers",
+      "RBA yield curves"
+    ],
+    "websiteURL": "https://ratesonar.com/",
+    "privacyPolicyURL": "https://ratesonar.com/privacy/",
+    "termsOfServiceURL": "https://ratesonar.com/terms/",
+    "defaultPrompt": [
+      "What is the highest 12-month term deposit rate in Australia right now?",
+      "Which lenders changed home loan rates in the last 7 days?",
+      "How has CBA's standard variable home loan rate changed since June 2026?"
+    ],
+    "brandColor": "#097689",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/logo.png"
+  }
+}

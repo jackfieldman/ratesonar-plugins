@@ -1,0 +1,17 @@
+{
+  "name": "ratesonar",
+  "version": "1.0.0",
+  "description": "Dated record of the rates Australian banks and lenders advertise. Read-only MCP tools plus a skill that reports each rate with its date.",
+  "author": {
+    "name": "RateSonar",
+    "url": "https://ratesonar.com"
+  },
+  "homepage": "https://ratesonar.com/agents/",
+  "keywords": ["australia", "interest-rates", "home-loans", "term-deposits", "savings", "banks", "MCP"],
+  "displayName": "RateSonar",
+  "icon": "./assets/icon.png",
+  "documentationUrl": "https://ratesonar.com/agents/",
+  "supportUrl": "https://ratesonar.com/contact/",
+  "privacyPolicyUrl": "https://ratesonar.com/privacy/",
+  "termsOfServiceUrl": "https://ratesonar.com/terms/"
+}

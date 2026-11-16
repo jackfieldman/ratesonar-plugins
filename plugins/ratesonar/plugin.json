@@ -1,0 +1,113 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "ratesonar",
+  "version": "1.0.0",
+  "description": "Dated record of the interest rates Australian banks and lenders advertise, plus RBA market curves. Read-only tools: find_products, compare_rates, rate_history, rate_details, rate_changes, list_series, series, bank_position, bank_analysis, yield_curve, curve_pipeline_status.",
+  "author": {
+    "name": "RateSonar",
+    "email": "contact@ratesonar.com",
+    "url": "https://ratesonar.com"
+  },
+  "homepage": "https://ratesonar.com/agents/",
+  "keywords": [
+    "australia",
+    "interest rates",
+    "home loans",
+    "savings",
+    "term deposits",
+    "banks",
+    "CDR"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "RateSonar",
+        "shortDescription": "Australian bank rates, dated",
+        "longDescription": "RateSonar keeps a daily record of the interest rates that Australian banks and lenders advertise. Each rate carries the date RateSonar recorded it. The record starts on 12 June 2026.\n\nUse RateSonar to:\n- Compare current advertised rates across lenders for home loans, savings accounts, term deposits, credit cards, personal loans, car loans and business loans. Filter home loans by owner-occupied or investment, principal-and-interest or interest-only, and variable or fixed. Filter term deposits by term.\n- See one product's advertised rate on each recorded day since 12 June 2026, and when it changed.\n- Read one product's full published detail: rate tiers, bonus conditions, fees, eligibility and constraints, as the lender published them on a given date.\n- List recent rate changes: rises, cuts, new products and withdrawn products, with the size of each move in basis points.\n- Read standard series, such as the variable home loan rate minus the RBA cash rate, for each lender and as a market median.\n- Place one bank's deposit and loan prices against comparable peers, its own history and the RBA cash rate, with an evidence-checked reading of that position.\n- Read dated RBA market curves: bond yields and the RBA's fitted zero, forward and discount curves.\n\nHow the data works:\n- Most rates come from the product reference data that Australian lenders publish under the Consumer Data Right (CDR). RateSonar also records the RBA cash rate and some lender web pages.\n- RateSonar answers from its own stored record. It does not send your question to a lender.\n- A day with no record is marked \"carried-forward\". Spreads and medians are marked \"derived\". Neither is shown as a new observation.\n- RateSonar has no record before 12 June 2026.\n\nLimits:\n- RateSonar reports advertised rates. It gives no personal financial advice, does not say which product suits a person, takes no applications and moves no money.\n- It covers Australian lenders only. A lender that does not publish CDR product data can be missing.\n- Without an API key, series requests return the last 31 days.\n\nWho it is for: people who compare Australian bank products, mortgage brokers, analysts, journalists and researchers who need a dated record of advertised rates.\n\nNo sign-in is needed to start. Every tool only reads data.",
+        "developerName": "RateSonar",
+        "category": "Finance",
+        "capabilities": [
+          "Compare current rates",
+          "Rate history by date",
+          "Product tiers and fees",
+          "Recent rate changes",
+          "Rate series and spreads",
+          "Bank position against peers",
+          "RBA yield curves"
+        ],
+        "websiteURL": "https://ratesonar.com/",
+        "supportURL": "https://ratesonar.com/contact/",
+        "privacyPolicyURL": "https://ratesonar.com/privacy/",
+        "termsOfServiceURL": "https://ratesonar.com/terms/",
+        "defaultPrompt": [
+          "What is the highest 12-month term deposit rate in Australia right now?",
+          "Which lenders changed home loan rates in the last 7 days?",
+          "How has CBA's standard variable home loan rate changed since June 2026?"
+        ],
+        "brandColor": "#097689",
+        "brandColorDark": "#2EE6FF",
+        "composerIcon": "./assets/icon.png",
+        "logo": "./assets/logo.png"
+      },
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Rank current 12-month term deposit rates across lenders.",
+              "prompt": "What is the highest 12-month term deposit rate in Australia right now?",
+              "tools_triggered": "compare_rates",
+              "expected_behavior": "Calls compare_rates with category term_deposit and termMonths 12 (customerSegment consumer if it chooses). Returns a ranked list of lenders and products, each with its rate and the date RateSonar recorded it. On 2026-10-17 the top row was 5.60% (recorded 2026-10-16). Rates change daily."
+            },
+            {
+              "description": "Show one product's advertised rate history.",
+              "prompt": "How has CBA's Standard Variable Rate home loan for owner-occupiers changed since June 2026?",
+              "tools_triggered": "find_products, rate_history",
+              "expected_behavior": "Calls find_products (institution CBA, query standard variable) to get institution_id cba and the product_id, then rate_history with both ids. Reports the recorded rate (6.49%, comparison rate 6.87% on 2026-10-17) with dates, and any change. It does not treat days with no record as observations."
+            },
+            {
+              "description": "List recent home loan rate changes.",
+              "prompt": "Which lenders changed home loan rates in the last 7 days?",
+              "tools_triggered": "rate_changes",
+              "expected_behavior": "Calls rate_changes with category home_loan and sinceDays 7. Lists changes newest first with lender, product, old and new rate and the move in basis points (on 2026-10-17: Bank First +25 bps on 2026-10-16)."
+            },
+            {
+              "description": "Explain one product's bonus conditions from its published detail.",
+              "prompt": "What do I need to do to get the bonus rate on ING Savings Maximiser?",
+              "tools_triggered": "find_products, rate_details",
+              "expected_behavior": "Calls find_products (institution ING, query savings maximiser), then rate_details with both ids. Gives the bonus rate (5.74% on 2026-10-17) and base rate (0.01%), the lender's own conditions, and the recorded date."
+            },
+            {
+              "description": "Show a standard spread series against the RBA cash rate.",
+              "prompt": "How far above the RBA cash rate is CBA's variable home loan rate this month?",
+              "tools_triggered": "list_series, series",
+              "expected_behavior": "May call list_series to find the slug, then series with slugs [spread.hl.var-cash], institutions [cba] and median true. Reports the spread in basis points per day (179 bps on 2026-10-17), says the points are derived, and shows the market median. Without a key the window is the last 31 days."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Personal financial advice. RateSonar reports advertised rates and has no advice tool. The assistant must not present a rate list as a recommendation for this person.",
+              "prompt": "I earn $120,000 and have a $600,000 loan. Which home loan should I switch to?",
+              "expected_behavior": "Does not recommend a product for the person. It may show recorded rates with their dates, and it says that a licensed adviser or broker can assess the person's situation."
+            },
+            {
+              "description": "Application or account opening. RateSonar only reads data and has no write tools.",
+              "prompt": "Open an ING Savings Maximiser account for me.",
+              "expected_behavior": "Says it cannot open accounts or apply for products and sends the person to the lender's website. No RateSonar tool is expected to run."
+            },
+            {
+              "description": "Outside coverage. RateSonar covers Australian lenders only.",
+              "prompt": "What are Kiwibank's home loan rates in New Zealand today?",
+              "expected_behavior": "Says RateSonar covers Australian lenders only and gives no New Zealand figure. If find_products runs, it returns no match and the assistant does not invent a rate."
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "RateSonar sells nothing in ChatGPT and processes no payments."
+      },
+      "publication": {
+        "countries": [],
+        "release_notes": "First release. Eleven read-only tools over RateSonar's dated record of advertised Australian rates and RBA market curves: find_products, compare_rates, rate_history, rate_details, rate_changes, list_series, series, bank_position, bank_analysis, yield_curve, curve_pipeline_status. No sign-in needed to start."
+      }
+    }
+  }
+}
